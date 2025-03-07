@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CRESA - Computer Engineering Regional Association</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #FF6B00;
+            --dark-color: #000;
+            --light-color: #fff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-color);
+            color: var(--light-color);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--dark-color);
+            transition: 0.4s;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light-color);
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--light-color);
+            font-weight: 500;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://source.unsplash.com/1920x1080/?technology,teamwork') center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+
+        .cta-button {
+            background: var(--primary-color);
+            border: none;
+            color: var(--light-color);
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background: #ff4800;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 0;
+        }
+
+        .mission-vision {
+            background: #111;
+            padding: 60px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        /* Events */
+        .events .card {
+            background: #222;
+            color: var(--light-color);
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .events .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            background: #111;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer a {
+            color: var(--light-color);
+            margin: 0 10px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light-color);
+            transition: color 0.3s ease, background 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .navbar-brand:hover {
+            color: var(--primary-color);
+            /* Change text color on hover */
+            background: rgba(255, 255, 255, 0.1);
+            /* Add a slight background */
+        }
+
+        .navbar-toggler {
+            border: none;
+            background: none;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .navbar-toggler-icon {
+            color: var(--light-color);
+            font-size: 1.5rem;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: url('https://source.unsplash.com/1920x1080/?technology,coding') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            /* Dark overlay for readability */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: var(--light-color);
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            background: var(--primary-color);
+            border: none;
+            color: var(--light-color);
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+        }
+
+        .cta-button:hover {
+            background: #ff4800;
+            transform: scale(1.05);
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: url('https://www.w3schools.com/w3images/lights.jpg') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+
+        .navbar-brand img {
+            height: 50px;
+            /* Adjust height */
+            width: auto;
+            /* Maintain aspect ratio */
+            max-width: 150px;
+            /* Prevents large images */
+        }
+
+
+
+        /* Fade-in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="logo.jpeg" alt="CRESA Logo" class="logo">
+                <span class="ms-2">CRESA</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon text-light"><i class="fas fa-bars"></i></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="team-members.html">Teams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="user-event.html">Events</a></li>
+
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content text-dark">
+                <div class="modal-header">
+                    <h5 class="modal-title">Admin Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="password" id="adminPassword" class="form-control" placeholder="Enter Admin Password">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" onclick="adminLogin()">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleLogin() {
+            if (localStorage.getItem("isAdmin") === "true") {
+                logoutAdmin();
+            } else {
+                var loginModal = new bootstrap.Modal(document.getElementById("loginModal"));
+                loginModal.show();
+            }
+        }
+
+        function adminLogin() {
+            let password = document.getElementById("adminPassword").value;
+            if (password === "admin123") {
+                localStorage.setItem("isAdmin", "true");
+                alert("Admin Logged In!");
+                document.getElementById("adminLoginBtn").innerText = "Logout";
+                window.location.href = "login.html"; // Redirect to Teams Page
+            } else {
+                alert("Incorrect Password!");
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem("isAdmin");
+            document.getElementById("adminLoginBtn").innerText = "Admin Login";
+            alert("Logged Out Successfully!");
+        }
+
+        function checkAdminStatus() {
+            if (localStorage.getItem("isAdmin") === "true") {
+                document.getElementById("adminLoginBtn").innerText = "Logout";
+            } else {
+                document.getElementById("adminLoginBtn").innerText = "Admin Login";
+            }
+        }
+
+        checkAdminStatus();
+    </script>
+
+    <script>
+        function checkAdminAccess() {
+            if (localStorage.getItem("isAdmin") !== "true") {
+                document.querySelectorAll(".admin-controls").forEach(el => el.style.display = "none");
+            }
+        }
+
+        function addMember() {
+            if (localStorage.getItem("isAdmin") !== "true") {
+                alert("Only admin can add members!");
+                return;
+            }
+
+            const name = prompt("Enter member name:");
+            const designation = prompt("Enter designation:");
+            const description = prompt("Enter description:");
+            const img = prompt("Enter image URL:");
+            if (name && designation && description && img) {
+                members.push({ name, designation, description, img });
+                renderMembers();
+            }
+        }
+
+        function updateMember(index) {
+            if (localStorage.getItem("isAdmin") !== "true") {
+                alert("Only admin can edit members!");
+                return;
+            }
+
+            const name = prompt("Update name:", members[index].name);
+            const designation = prompt("Update designation:", members[index].designation);
+            const description = prompt("Update description:", members[index].description);
+            const img = prompt("Update image URL:", members[index].img);
+            if (name && designation && description && img) {
+                members[index] = { name, designation, description, img };
+                renderMembers();
+            }
+        }
+
+        function deleteMember(index) {
+            if (localStorage.getItem("isAdmin") !== "true") {
+                alert("Only admin can delete members!");
+                return;
+            }
+
+            if (confirm("Are you sure you want to delete this member?")) {
+                members.splice(index, 1);
+                renderMembers();
+            }
+        }
+
+        checkAdminAccess();
+    </script>
+
+    <!-- Hero Section -->
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container text-center hero-content">
+            <h1>Welcome to CRESA</h1>
+            <p>The Official Computer Engineering Club for Innovation & Collaboration</p>
+            <a href="index.html" class="btn cta-button">Join Our Tech Community</a>
+        </div>
+    </section>
+
+
+    <!-- Mission & Vision -->
+    <section class="section">
+        <div class="container">
+            <div class="mission-vision">
+                <h2>Our Mission & Vision</h2>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h3>Mission</h3>
+                        <p>To foster a community of innovation where students enhance their skills in coding, AI, and
+                            cybersecurity while bridging the gap between academia and industry.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>Vision</h3>
+                        <p>To establish CRESA as a leading technical hub where students collaborate on projects,
+                            participate in hackathons, and contribute to the global tech ecosystem.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h3>Contact Us</h3>
+            <p>Email: contact@cresa.org | Phone: +91 9876543210</p>
+            <div>
+                <a href="#"><i class="fab fa-facebook fa-2x"></i></a>
+                <a href="#"><i class="fab fa-instagram fa-2x"></i></a>
+                <a href="#"><i class="fab fa-linkedin fa-2x"></i></a>
+                <a href="#"><i class="fab fa-twitter fa-2x"></i></a>
+            </div>
+            <p class="mt-3">&copy; 2025 CRESA - Computer Engineering Club. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

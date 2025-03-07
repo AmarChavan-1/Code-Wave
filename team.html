@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .form-container {
+            background-color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-orange {
+            background-color: #ff6600;
+            border-color: #ff6600;
+        }
+
+        .btn-orange:hover {
+            background-color: #e65c00;
+            border-color: #e65c00;
+        }
+
+        .team-member {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            height: 400px;
+            /* Set a fixed height for uniformity */
+        }
+
+        .team-member img {
+            width: 100%;
+            height: 200px;
+            /* Set a fixed height for images */
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .team-member .btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mt-5">Add Team Member</h1>
+        <div class="form-container">
+            <form id="teamForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter team member name" required>
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <input type="text" class="form-control" id="role" placeholder="Enter team member role" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter team member email" required>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Photo</label>
+                    <input type="file" class="form-control-file" id="photo" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn btn-orange">Add Member</button>
+            </form>
+        </div>
+        <div class="team-container mt-5">
+            <h2>Team Members</h2>
+            <div class="row" id="teamMembers"></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+            const teamMembersContainer = document.getElementById('teamMembers');
+            teamMembers.forEach((member, index) => {
+                const memberElement = document.createElement('div');
+                memberElement.classList.add('col-md-4');
+                memberElement.innerHTML = `
+                    <div class="team-member">
+                        <img src="${member.photoSrc}" alt="${member.name}" class="img-fluid rounded mb-2">
+                        <h3>${member.name}</h3>
+                        <p>${member.role}</p>
+                        <p>${member.email}</p>
+                        <button class="btn btn-orange" onclick="editMember(${index})">Edit</button>
+                        <button class="btn btn-danger" onclick="removeMember(${index})">Remove</button>
+                    </div>
+                `;
+                teamMembersContainer.appendChild(memberElement);
+            });
+        });
+
+        $('#teamForm').on('submit', function (event) {
+            event.preventDefault();
+            const name = $('#name').val();
+            const role = $('#role').val();
+            const email = $('#email').val();
+            const photo = $('#photo')[0].files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const photoSrc = e.target.result;
+                const memberDetails = {
+                    name: name,
+                    role: role,
+                    email: email,
+                    photoSrc: photoSrc
+                };
+                let teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+                teamMembers.push(memberDetails);
+                localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                alert('Team member added successfully!');
+                location.reload();
+            };
+            reader.readAsDataURL(photo);
+        });
+
+        function editMember(index) {
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+            const member = teamMembers[index];
+            const name = prompt("Enter new name:", member.name);
+            const role = prompt("Enter new role:", member.role);
+            const email = prompt("Enter new email:", member.email);
+            if (name && role && email) {
+                member.name = name;
+                member.role = role;
+                member.email = email;
+                localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                alert('Team member updated successfully!');
+                location.reload();
+            }
+        }
+
+        function removeMember(index) {
+            let teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+            teamMembers.splice(index, 1);
+            localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+            alert('Team member removed successfully!');
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>

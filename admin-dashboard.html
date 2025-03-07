@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .form-container {
+            background-color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-orange {
+            background-color: #ff6600;
+            border-color: #ff6600;
+        }
+
+        .btn-orange:hover {
+            background-color: #e65c00;
+            border-color: #e65c00;
+        }
+
+        .team-member,
+        .event {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            height: 400px;
+            /* Set a fixed height for uniformity */
+        }
+
+        .team-member img,
+        .event img {
+            width: 100%;
+            height: 200px;
+            /* Set a fixed height for images */
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .team-member .btn,
+        .event .btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mt-5">Admin Dashboard</h1>
+        <div class="text-center mt-3">
+            <button class="btn btn-orange" onclick="showSection('teamSection')"><a href="team.html">Add Team
+                    Member</a></button>
+            <button class="btn btn-orange" onclick="showSection('eventSection')"><a href="admin-event.html">Add
+                    Event</button>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                if (localStorage.getItem('isLoggedIn') !== 'true') {
+                    window.location.href = 'login.html';
+                }
+
+                const teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+                const teamMembersContainer = document.getElementById('teamMembers');
+                const teams = [
+                    "Management Team",
+                    "Design Team",
+                    "Cultural Team",
+                    "Social Media Team",
+                    "Finance Team",
+                    "Sports Team",
+                    "Core Team"
+                ];
+
+                teams.forEach(team => {
+                    const teamSection = document.createElement('div');
+                    teamSection.innerHTML = `<h3>${team}</h3><div class="row" id="${team.replace(/\s+/g, '')}"></div>`;
+                    teamMembersContainer.appendChild(teamSection);
+                });
+
+                teamMembers.forEach((member, index) => {
+                    const memberElement = document.createElement('div');
+                    memberElement.classList.add('col-md-4');
+                    memberElement.innerHTML = `
+                    <div class="team-member">
+                        <img src="${member.photoSrc}" alt="${member.name}" class="img-fluid rounded mb-2">
+                        <h3>${member.name}</h3>
+                        <p>${member.role}</p>
+                        <p>${member.email}</p>
+                        <p><strong>Team:</strong> ${member.team}</p>
+                        <button class="btn btn-orange" onclick="editMember(${index})">Edit</button>
+                        <button class="btn btn-danger" onclick="removeMember(${index})">Remove</button>
+                    </div>
+                `;
+                    document.getElementById(member.team.replace(/\s+/g, '')).appendChild(memberElement);
+                });
+
+                const events = JSON.parse(localStorage.getItem('events')) || [];
+                const upcomingEventsContainer = document.getElementById('upcomingEvents');
+                const pastEventsContainer = document.getElementById('pastEvents');
+                const currentDate = new Date().toISOString().split('T')[0];
+
+                events.forEach((event, index) => {
+                    const eventElement = document.createElement('div');
+                    eventElement.classList.add('col-md-4');
+                    eventElement.innerHTML = `
+                    <div class="event">
+                        <img src="${event.photoSrc}" alt="${event.name}" class="img-fluid rounded mb-2">
+                        <h3>${event.name}</h3>
+                        <p>${event.description}</p>
+                        <p>${event.date}</p>
+                        <button class="btn btn-orange" onclick="editEvent(${index})">Edit</button>
+                        <button class="btn btn-danger" onclick="removeEvent(${index})">Remove</button>
+                    </div>
+                `;
+                    if (event.date >= currentDate) {
+                        upcomingEventsContainer.appendChild(eventElement);
+                    } else {
+                        pastEventsContainer.appendChild(eventElement);
+                    }
+                });
+            });
+
+            function showSection(sectionId) {
+                document.getElementById('teamSection').style.display = 'none';
+                document.getElementById('eventSection').style.display = 'none';
+                document.getElementById(sectionId).style.display = 'block';
+            }
+
+            $('#teamForm').on('submit', function (event) {
+                event.preventDefault();
+                const name = $('#name').val();
+                const role = $('#role').val();
+                const email = $('#email').val();
+                const team = $('#team').val();
+                const photo = $('#photo')[0].files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const photoSrc = e.target.result;
+                    const memberDetails = {
+                        name: name,
+                        role: role,
+                        email: email,
+                        team: team,
+                        photoSrc: photoSrc
+                    };
+                    let teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+                    teamMembers.push(memberDetails);
+                    localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                    alert('Team member added successfully!');
+                    location.reload();
+                };
+                reader.readAsDataURL(photo);
+            });
+
+            $('#eventForm').on('submit', function (event) {
+                event.preventDefault();
+                const name = $('#eventName').val();
+                const description = $('#eventDescription').val();
+                const date = $('#eventDate').val();
+                const photo = $('#eventPhoto')[0].files[0];
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const photoSrc = e.target.result;
+                    const eventDetails = {
+                        name: name,
+                        description: description,
+                        date: date,
+                        photoSrc: photoSrc
+                    };
+                    let events = JSON.parse(localStorage.getItem('events')) || [];
+                    events.push(eventDetails);
+                    localStorage.setItem('events', JSON.stringify(events));
+                    alert('Event added successfully!');
+                    location.reload();
+                };
+                reader.readAsDataURL(photo);
+            });
+
+            function editMember(index) {
+                const teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+                const member = teamMembers[index];
+                const name = prompt("Enter new name:", member.name);
+                const role = prompt("Enter new role:", member.role);
+                const email = prompt("Enter new email:", member.email);
+                const team = prompt("Enter new team:", member.team);
+                if (name && role && email && team) {
+                    member.name = name;
+                    member.role = role;
+                    member.email = email;
+                    member.team = team;
+                    localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                    alert('Team member updated successfully!');
+                    location.reload();
+                }
+            }
+
+            function removeMember(index) {
+                let teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+                teamMembers.splice(index, 1);
+                localStorage.setItem('teamMembers', JSON.stringify(teamMembers));
+                alert('Team member removed successfully!');
+                location.reload();
+            }
+
+            function editEvent(index) {
+                const events = JSON.parse(localStorage.getItem('events')) || [];
+                const event = events[index];
+                const name = prompt("Enter new event name:", event.name);
+                const description = prompt("Enter new event description:", event.description);
+                const date = prompt("Enter new event date:", event.date);
+                if (name && description && date) {
+                    event.name = name;
+                    event.description = description;
+                    event.date = date;
+                    localStorage.setItem('events', JSON.stringify(events));
+                    alert('Event updated successfully!');
+                    location.reload();
+                }
+            }
+
+            function removeEvent(index) {
+                let events = JSON.parse(localStorage.getItem('events')) || [];
+                events.splice(index, 1);
+                localStorage.setItem('events', JSON.stringify(events));
+                alert('Event removed successfully!');
+                location.reload();
+            }
+        </script>
+</body>
+
+</html>

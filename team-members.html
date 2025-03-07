@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .event-container {
+            margin-top: 30px;
+        }
+
+        .team-member {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            height: 400px;
+            /* Set a fixed height for uniformity */
+        }
+
+        .team-member img {
+            width: 100%;
+            height: 200px;
+            /* Set a fixed height for images */
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center mt-5">Team</h1>
+        <div class="event-container">
+            <h2>Team Members</h2>
+            <div class="row" id="teamMembers"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const teamMembers = JSON.parse(localStorage.getItem('teamMembers')) || [];
+            const teamMembersContainer = document.getElementById('teamMembers');
+            teamMembers.forEach(member => {
+                const memberElement = document.createElement('div');
+                memberElement.classList.add('col-md-4');
+                memberElement.innerHTML = `
+                    <div class="team-member">
+                        <img src="${member.photoSrc}" alt="${member.name}" class="img-fluid rounded mb-2">
+                        <h3>${member.name}</h3>
+                        <p>${member.role}</p>
+                        <p>${member.email}</p>
+                    </div>
+                `;
+                teamMembersContainer.appendChild(memberElement);
+            });
+        });
+    </script>
+</body>
+
+</html>
